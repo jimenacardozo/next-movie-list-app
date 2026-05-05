@@ -1,15 +1,9 @@
 import { useState, useEffect, useCallback, useRef, SetStateAction } from 'react';
-import { fetchMovies, fetchGenres } from '../movieService';
+import { fetchMovies } from '../movieService';
 import { Movie, MovieSearchParams } from '../types/movie';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
-interface UseMoviesFilters {
-  genreFilter: string;
-  yearFilter: string;
-  searchQuery: string;
-}
-
-export default function useMovies() {
+export default function useMovies(genres: Record<number, string>) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -18,7 +12,6 @@ export default function useMovies() {
   const queryFromURL = searchParams.get('query') || '';
 
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [genres, setGenres] = useState<Record<number, string>>({});
   const [genreFilter, setGenreFilter] = useState(genreFromURL);
   const [yearFilter, setYearFilter] = useState(yearFromURL);
   const [searchQuery, setSearchQuery] = useState(queryFromURL);
@@ -27,19 +20,10 @@ export default function useMovies() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  const isNavigatingRef = useRef(false);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [genreFilter, yearFilter, searchQuery]);
-
-  useEffect(() => {
-    fetchGenres()
-      .then(g => {
-        setGenres(g);
-      })
-      .catch(err => setError(err.message));
-  }, [currentPage, genreFilter, yearFilter, searchQuery]);
 
   const buildParams = useCallback(() => {
     const params: MovieSearchParams = {};

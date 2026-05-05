@@ -9,7 +9,7 @@ import Pagination from './Pagination';
 export default function MovieSection({ genres }: { genres: Record<number, string> }) {
   const { movies, error, currentPage, totalPages, genreFilter, yearFilter,
           searchInput, handleGenreChange, handleYearChange,
-          setSearchQueryDebounced, setCurrentPage } = useMovies();
+          setSearchQueryDebounced, setCurrentPage } = useMovies(genres);
 
   return (
     <section className="content-area">

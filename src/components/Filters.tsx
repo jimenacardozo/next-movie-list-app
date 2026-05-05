@@ -29,7 +29,7 @@ export default function Filters({
             <select
                 name="genre"
                 className="filter-select"
-                value={genreFilter} // React maneja la selección aquí
+                value={genreFilter}
                 disabled={isSearchActive}
                 onChange={(e) => onGenreChange(e.target.value)}
             >
