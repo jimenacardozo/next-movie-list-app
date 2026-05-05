@@ -5,7 +5,7 @@ const API_BASE = "https://api.themoviedb.org/3";
 
 const headers = {
     accept: "application/json",
-    Authorization: `Bearer ${CONFIG.API_KEY}`,
+    Authorization: `Bearer ${CONFIG.NEXT_PUBLIC_API_KEY}`,
 };
 
 export async function fetchTrendingMovies() {

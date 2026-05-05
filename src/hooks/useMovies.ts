@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, use, useRef, SetStateAction } from 'react';
+import { useState, useEffect, useCallback, useRef, SetStateAction } from 'react';
 import { fetchMovies, fetchGenres } from '../movieService';
 import { Movie, MovieSearchParams } from '../types/movie';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 interface UseMoviesFilters {
   genreFilter: string;
@@ -9,24 +9,20 @@ interface UseMoviesFilters {
   searchQuery: string;
 }
 
-function readParamsFromURL(): UseMoviesFilters {
-  const params = useSearchParams();
-  //const params = new URLSearchParams(window.location.search);
-  return {
-    genreFilter: params.get('genre') || 'all',
-    yearFilter: params.get('year') || 'all',
-    searchQuery: params.get('query') || '',
-  };
-}
-
 export default function useMovies() {
-  const initial = readParamsFromURL();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const genreFromURL = searchParams.get('genre') || 'all';
+  const yearFromURL = searchParams.get('year') || 'all';
+  const queryFromURL = searchParams.get('query') || '';
+
   const [movies, setMovies] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Record<number, string>>({});
-  const [genreFilter, setGenreFilter] = useState(initial.genreFilter);
-  const [yearFilter, setYearFilter] = useState(initial.yearFilter);
-  const [searchQuery, setSearchQuery] = useState(initial.searchQuery);
-  const [searchInput, setSearchInput] = useState(initial.searchQuery);
+  const [genreFilter, setGenreFilter] = useState(genreFromURL);
+  const [yearFilter, setYearFilter] = useState(yearFromURL);
+  const [searchQuery, setSearchQuery] = useState(queryFromURL);
+  const [searchInput, setSearchInput] = useState(queryFromURL);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -63,40 +59,23 @@ export default function useMovies() {
     return params;
   }, [genreFilter, yearFilter, searchQuery, currentPage]);
 
-  useEffect(() => {
-    if (isNavigatingRef.current) {
-      isNavigatingRef.current = false;
-      return;
-    }
-    const urlParams = new URLSearchParams();
-    if (searchQuery.trim()) {
-      urlParams.set('query', searchQuery.trim());
-    } else {
-      if (genreFilter && genreFilter !== 'all') {
-        urlParams.set('genre', genreFilter);
-      }   
-      if (yearFilter && yearFilter !== 'all') {
-        urlParams.set('year', yearFilter);
+    useEffect(() => {
+      const params = new URLSearchParams();
+      if (searchQuery.trim()) {
+        params.set('query', searchQuery.trim());
+      } else {
+        if (genreFilter !== 'all') params.set('genre', genreFilter);
+        if (yearFilter !== 'all') params.set('year', yearFilter);
       }
-    }
-    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-    window.history.pushState(null, '', newUrl);
-  }, [genreFilter, yearFilter, searchQuery]);
+      router.replace(`${pathname}?${params.toString()}`);
+    }, [genreFilter, yearFilter, searchQuery, pathname, router]);
 
   useEffect(() => {
-    function handlePopState() {
-      isNavigatingRef.current = true;
-      const params = readParamsFromURL();
-      setGenreFilter(params.genreFilter);
-      setYearFilter(params.yearFilter);
-      setSearchQuery(params.searchQuery);
-      setSearchInput(params.searchQuery);
-    }
-    window.addEventListener('popstate', handlePopState);
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
+    setGenreFilter(genreFromURL);
+    setYearFilter(yearFromURL);
+    setSearchQuery(queryFromURL);
+    setSearchInput(queryFromURL);
+  }, [genreFromURL, yearFromURL, queryFromURL]);
 
   useEffect(() => {
     setError(null);
