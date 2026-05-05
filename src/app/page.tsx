@@ -9,8 +9,8 @@ import MovieSection from '../components/MovieSection'
 export default async function HomePage(){
   const genres = await fetchGenres();
   const movies = await fetchMovies();
-  const trendingMovies = await fetchTrendingMovies();
-  const trendingMovie = trendingMovies?.[0];
+  const trendingData = await fetchTrendingMovies();
+  const trendingMovie = trendingData?.results?.[0];
   if (!trendingMovie) {
     return <div>No movies available at the moment.</div>;
   }
@@ -18,14 +18,12 @@ export default async function HomePage(){
 
   return (
     <>
-      <Header />
       <Hero
         movie={trendingMovie}
         genres={genres}
         details={details}
       />
       <MovieSection genres={genres}/>
-      <Footer />
     </>
   )
 }
