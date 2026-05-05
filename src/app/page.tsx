@@ -1,6 +1,4 @@
-import Header from '../components/Header'
 import Hero from '../components/Hero'
-import Footer from '../components/Footer'
 import './global.css'
 import { fetchMovies, fetchGenres, fetchMovieDetails } from '../movieService'
 import { fetchTrendingMovies } from '../movieService'
