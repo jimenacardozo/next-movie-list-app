@@ -1,5 +1,4 @@
 .hero {
-    padding: 2rem;
     display: flex;
     justify-content: center;
     min-height: 90vh;
@@ -27,6 +26,7 @@
 }
 
 .heroContent {
+    padding: 0 3rem;
     position: relative;
     z-index: 1;
     display: flex;

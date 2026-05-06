@@ -1,5 +1,6 @@
 import { fetchMovieCredits, fetchMovieDetails, fetchMovieVideos } from "@/src/movieService"
 import Hero from "@/src/components/Hero"
+import MovieInfo from "@/src/components/MovieInfo"
 
 export default async function MovieDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -21,6 +22,7 @@ export default async function MovieDetailsPage({ params }: { params: Promise<{ i
   return (
     <>
       <Hero movie={movie} details={details} genreList={movie.genres} />
+      <MovieInfo movie={movie} credits={credits} />
     </>
   )
 }
