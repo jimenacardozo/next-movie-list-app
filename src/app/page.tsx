@@ -1,12 +1,11 @@
 import Hero from '../components/Hero'
 import './global.css'
-import { fetchMovies, fetchGenres, fetchMovieDetails } from '../movieService'
+import { fetchGenres, fetchMovieDetails } from '../movieService'
 import { fetchTrendingMovies } from '../movieService'
 import MovieSection from '../components/MovieSection'
 
 export default async function HomePage(){
   const genres = await fetchGenres();
-  const movies = await fetchMovies();
   const trendingData = await fetchTrendingMovies();
   const trendingMovie = trendingData?.results?.[0];
   if (!trendingMovie) {
@@ -20,6 +19,7 @@ export default async function HomePage(){
         movie={trendingMovie}
         genres={genres}
         details={details}
+        showTrendingTag={true}
       />
       <MovieSection genres={genres}/>
     </>

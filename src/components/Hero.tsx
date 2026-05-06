@@ -1,8 +1,8 @@
-import { Movie, MovieDetails } from '../types/movie';
+import { Movie, MovieDetails, Genre } from '../types/movie';
 import styles from './Hero.module.css';
 import Image from 'next/image';
 
-export default function Hero( {genres, movie, details} : {genres: Record<number, string>, movie: Movie | null, details: MovieDetails} ) {
+export default function Hero( {genres, movie, details, genreList, showTrendingTag} : {genres?: Record<number, string>, movie: Movie | null, details: MovieDetails, genreList?: Genre[], showTrendingTag?: boolean} ) {
     if (!movie) return null;
 
     const heroData = {
@@ -12,9 +12,9 @@ export default function Hero( {genres, movie, details} : {genres: Record<number,
         duration: details.runtime ? `${Math.floor(details.runtime / 60)}h ${details.runtime % 60}m` : 'Unknown',
         overview: movie.overview,
         trailerURL: details.trailerURL,
-        genres: movie.genre_ids.map(id => ({
+        genres: genreList ?? (movie.genre_ids ?? []).map(id => ({
             id: id,
-            name: genres[id]
+            name: genres?.[id] ?? ''
         }))
     };
 
@@ -29,7 +29,7 @@ export default function Hero( {genres, movie, details} : {genres: Record<number,
             <div className={styles.heroContent}>
                 <Image className={styles.heroImage} src={posterSrc} alt={heroData.title} width={500} height={750} />
                 <div className={styles.heroInfo}>
-                    <span className={styles.trendingTag}>#1 Trending</span>
+                    {showTrendingTag && <span className={styles.trendingTag}>#1 Trending</span>}
                     <h1>{heroData.title}</h1>
                     <div className={styles.heroMovieDetails}>
                         <span className={styles.rating}>★ {heroData.rating}</span>

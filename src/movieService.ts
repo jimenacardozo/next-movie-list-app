@@ -56,6 +56,14 @@ export async function fetchMovies(params: MovieSearchParams = {}) {
     return res.json();
 }
 
+export async function fetchMovieCredits(movieId: number){
+    const res = await fetch(`${API_BASE}/movie/${movieId}/credits`, {
+        headers
+    });
+    if (!res.ok) throw new Error(`Error fetching details: ${res.status}`);
+    return res.json();
+}
+
 export function determineEndpoint(params: MovieSearchParams) {
     if (params.query && params.query.trim() !== "") {
         return `${API_BASE}/search/movie`;
