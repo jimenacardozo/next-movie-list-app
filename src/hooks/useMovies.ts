@@ -51,7 +51,7 @@ export default function useMovies(genres: Record<number, string>) {
         if (genreFilter !== 'all') params.set('genre', genreFilter);
         if (yearFilter !== 'all') params.set('year', yearFilter);
       }
-      router.push(`${pathname}?${params.toString()}`);
+      router.push(`${pathname}?${params.toString()}`, { scroll: false});
     }, [genreFilter, yearFilter, searchQuery, pathname, router]);
 
   useEffect(() => {
