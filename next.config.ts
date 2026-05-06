@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         hostname: 'image.tmdb.org',
         port: '',
         pathname: '/**'
-      },
+      },  
       {
         protocol: 'https',
         hostname: 'cdn.otro-sitio.net',

@@ -25,7 +25,7 @@ export default function MovieCard({ movie, genres }: {
             <h2 className="px-[0.3rem] py-[0.3rem] text-[1rem] text-white">
                 {movie.title}
             </h2>
-            <span className="pl-[0.3rem]">{year}</span> 
+            <span className="pl-[0.3rem] text-[#7d7d7f]">{year}</span>
             <div className="flex flex-wrap">
                 {movie.genre_ids.map((id) => (
                     <span key={id} className="text-[0.8rem] text-[#7d7d7f] border border-[#232426] rounded-xl bg-[#0e0f11] px-[0.3rem] py-[0.3rem] m-[0.3rem]">
