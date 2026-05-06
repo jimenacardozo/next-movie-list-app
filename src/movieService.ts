@@ -1,5 +1,5 @@
 import { CONFIG } from "./config";
-import { Genre, MovieSearchParams } from "./types/movie";
+import { Genre, MovieCredits, MovieDetails, MovieSearchParams } from "./types/movie";
 
 const API_BASE = "https://api.themoviedb.org/3";
 
@@ -16,7 +16,7 @@ export async function fetchTrendingMovies() {
     return res.json();
 }
 
-export async function fetchMovieDetails(movieId: number) {
+export async function fetchMovieDetails(movieId: number): Promise<MovieDetails> {
     const res = await fetch(`${API_BASE}/movie/${movieId}`, {
         headers
     });
@@ -56,7 +56,7 @@ export async function fetchMovies(params: MovieSearchParams = {}) {
     return res.json();
 }
 
-export async function fetchMovieCredits(movieId: number){
+export async function fetchMovieCredits(movieId: number): Promise<MovieCredits> {
     const res = await fetch(`${API_BASE}/movie/${movieId}/credits`, {
         headers
     });

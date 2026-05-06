@@ -14,9 +14,9 @@ export interface Genre {
   name: string;
 }
 
-export interface MovieDetails {
+export interface MovieDetails extends Movie {
     runtime?: number;
-    trailerURL?: string | null; 
+    trailerURL?: string | null;
     videos?: {
         results: {
             site: string;
@@ -25,7 +25,7 @@ export interface MovieDetails {
         }[];
     };
     genres: Genre[];
-    origin_country?: string;
+    origin_country?: string[];
     original_language: string;
     belongs_to_collection: Collection | null;
 }

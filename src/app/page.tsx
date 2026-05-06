@@ -3,6 +3,11 @@ import './global.css'
 import { fetchGenres, fetchMovieDetails } from '../movieService'
 import { fetchTrendingMovies } from '../movieService'
 import MovieSection from '../components/MovieSection'
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "CineVault",
+};
 
 export default async function HomePage(){
   const genres = await fetchGenres();
