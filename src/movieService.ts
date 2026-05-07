@@ -8,34 +8,35 @@ const headers = {
     Authorization: `Bearer ${CONFIG.API_KEY}`,
 };
 
+const FETCH_OPTIONS: RequestInit & {
+  next: { revalidate: number }
+} = {
+  headers,
+  next: {
+    revalidate: 86400, 
+  },
+};
+
 export async function fetchTrendingMovies() {
-    const res = await fetch(`${API_BASE}/trending/movie/day`, {
-        headers
-    });
+    const res = await fetch(`${API_BASE}/trending/movie/day`, FETCH_OPTIONS);
     if (!res.ok) throw new Error(`Error fetching trending: ${res.status}`);
     return res.json();
 }
 
 export async function fetchMovieDetails(movieId: number): Promise<MovieDetails> {
-    const res = await fetch(`${API_BASE}/movie/${movieId}`, {
-        headers
-    });
+    const res = await fetch(`${API_BASE}/movie/${movieId}`, FETCH_OPTIONS);
     if (!res.ok) throw new Error(`Error fetching details: ${res.status}`);
     return res.json();
 }
 
 export async function fetchMovieVideos(movieId: number) {
-    const res = await fetch(`${API_BASE}/movie/${movieId}/videos`, {
-        headers
-    });
+    const res = await fetch(`${API_BASE}/movie/${movieId}/videos`, FETCH_OPTIONS);
     if (!res.ok) throw new Error(`Error fetching videos: ${res.status}`);
     return res.json();
 }
 
 export async function fetchGenres() {
-    const res = await fetch(`${API_BASE}/genre/movie/list`, {
-        headers
-    });
+    const res = await fetch(`${API_BASE}/genre/movie/list`, FETCH_OPTIONS);
     if (!res.ok) throw new Error(`Error fetching genres: ${res.status}`);
     const data = await res.json();
     return Object.fromEntries(data.genres.map((g: Genre) => [g.id, g.name]));
@@ -57,9 +58,7 @@ export async function fetchMovies(params: MovieSearchParams = {}) {
 }
 
 export async function fetchMovieCredits(movieId: number): Promise<MovieCredits> {
-    const res = await fetch(`${API_BASE}/movie/${movieId}/credits`, {
-        headers
-    });
+    const res = await fetch(`${API_BASE}/movie/${movieId}/credits`, FETCH_OPTIONS);
     if (!res.ok) throw new Error(`Error fetching details: ${res.status}`);
     return res.json();
 }
