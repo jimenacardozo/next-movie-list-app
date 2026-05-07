@@ -1,6 +1,18 @@
 import { fetchMovieCredits, fetchMovieDetails, fetchMovieVideos } from "@/src/movieService"
 import Hero from "@/src/components/Hero"
 import MovieInfo from "@/src/components/MovieInfo"
+import { Metadata } from 'next';
+
+export async function generateMetadata(
+  { params } : { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const movie = await fetchMovieDetails(Number(id));
+  
+  return {
+    title: `${movie.title}`,
+  };
+}
 
 export default async function MovieDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
