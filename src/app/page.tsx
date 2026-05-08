@@ -1,6 +1,6 @@
 import Hero from '../components/Hero'
 import './global.css'
-import { fetchGenres, fetchMovieDetails } from '../movieService'
+import { fetchGenres, fetchMovieDetails, fetchMovieVideos } from '../movieService'
 import { fetchTrendingMovies } from '../movieService'
 import MovieSection from '../components/MovieSection'
 
@@ -11,7 +11,17 @@ export default async function HomePage(){
   if (!trendingMovie) {
     return <div>No movies available at the moment.</div>;
   }
-  const details = await fetchMovieDetails(trendingMovie.id);
+  const [movieDetails, videos] = await Promise.all([
+    fetchMovieDetails(trendingMovie.id),
+    fetchMovieVideos(trendingMovie.id),
+  ]);
+  const trailerVideo = videos?.results?.find(
+    (v: { site: string; type: string; key: string }) => v.site === 'YouTube' && v.type === 'Trailer'
+  );
+  const details = {
+    ...movieDetails,
+    trailerURL: trailerVideo ? `https://www.youtube.com/watch?v=${trailerVideo.key}` : null,
+  };
 
   return (
     <>
