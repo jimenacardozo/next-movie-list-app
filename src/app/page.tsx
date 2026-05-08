@@ -3,6 +3,7 @@ import './global.css'
 import { fetchGenres, fetchMovieDetails, fetchMovieVideos } from '../movieService'
 import { fetchTrendingMovies } from '../movieService'
 import MovieSection from '../components/MovieSection'
+import { Suspense } from 'react'
 
 export default async function HomePage(){
   const genres = await fetchGenres();
@@ -31,7 +32,9 @@ export default async function HomePage(){
         details={details}
         showTrendingTag={true}
       />
-      <MovieSection genres={genres}/>
+      <Suspense>
+        <MovieSection genres={genres}/>
+      </Suspense>
     </>
   )
 }

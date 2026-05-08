@@ -68,9 +68,8 @@ export default function useMovies(genres: Record<number, string>) {
         setMovies(data.results);
         setTotalPages(data.total_pages);
       })
-      .catch(err => setError(err.message));    
+      .catch(err => setError(err.message));
   }, [buildParams]);
-
 
   const handleGenreChange = (genreId: string) => {
     setGenreFilter(genreId);

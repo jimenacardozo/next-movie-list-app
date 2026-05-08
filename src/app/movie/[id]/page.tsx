@@ -4,8 +4,6 @@ import MovieInfo from "@/src/components/MovieInfo"
 import { cookies } from 'next/headers'
 import WatchlistButton from '@/src/components/WatchlistButton'
 
-export const revalidate = 60 * 60 * 24;
-
 export async function generateMetadata(
   { params } : { params: Promise<{ id: string }> }
 ) {

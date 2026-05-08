@@ -15,7 +15,8 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.otro-sitio.net',
       },
     ]
-  }
+  },
+  cacheComponents: true,
 };
 
 export default nextConfig;
