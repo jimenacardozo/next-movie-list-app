@@ -1,6 +1,8 @@
 import { fetchMovieCredits, fetchMovieDetails, fetchMovieVideos, fetchTrendingMovies } from "@/src/movieService"
 import Hero from "@/src/components/Hero"
 import MovieInfo from "@/src/components/MovieInfo"
+import { cookies } from 'next/headers'
+import WatchlistButton from '@/src/components/WatchlistButton'
 
 export const revalidate = 60 * 60 * 24;
 
@@ -28,6 +30,11 @@ export async function generateStaticParams(){
 export default async function MovieDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
+  const cookieStore = await cookies()
+  const raw = cookieStore.get('watchlist')?.value
+  const watchlist: number[] = raw ? JSON.parse(raw) : []
+  const isInWatchlist = watchlist.includes(Number(id))
+
   const [movie, videos, credits] = await Promise.all([
     fetchMovieDetails(Number(id)),
     fetchMovieVideos(Number(id)),
@@ -45,6 +52,9 @@ export default async function MovieDetailsPage({ params }: { params: Promise<{ i
   return (
     <>
       <Hero movie={movie} details={details} genreList={movie.genres} />
+      <div className="max-w-5xl mx-auto px-6 pt-6">
+        <WatchlistButton movieId={Number(id)} isInWatchlist={isInWatchlist} />
+      </div>
       <MovieInfo movie={movie} credits={credits} />
     </>
   )

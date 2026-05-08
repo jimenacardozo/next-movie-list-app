@@ -13,12 +13,21 @@ const FETCH_OPTIONS: RequestInit & {
 } = {
   headers,
   next: {
-    revalidate: 86400, 
+    revalidate: 86400,
+  },
+};
+
+const TRENDING_FETCH_OPTIONS: RequestInit & {
+  next: { revalidate: number }
+} = {
+  headers,
+  next: {
+    revalidate: 3600,
   },
 };
 
 export async function fetchTrendingMovies() {
-    const res = await fetch(`${API_BASE}/trending/movie/day`, FETCH_OPTIONS);
+    const res = await fetch(`${API_BASE}/trending/movie/day`, TRENDING_FETCH_OPTIONS);
     if (!res.ok) throw new Error(`Error fetching trending: ${res.status}`);
     return res.json();
 }
