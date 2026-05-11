@@ -3,6 +3,7 @@
 import { CONFIG } from "./config";
 import { Genre, MovieCredits, MovieDetails, MovieSearchParams } from "./types/movie";
 import { cacheTag, cacheLife } from "next/cache";
+import { notFound } from "next/navigation";
 
 const API_BASE = "https://api.themoviedb.org/3";
 
@@ -27,6 +28,7 @@ export async function fetchMovieDetails(movieId: number): Promise<MovieDetails> 
     cacheTag('movies', `movie-${movieId}`)
     console.log(`[cache miss] fetchMovieDetails(${movieId}) — fetching from TMDB`)
     const res = await fetch(`${API_BASE}/movie/${movieId}`, { headers });
+    if (res.status === 404) notFound();
     if (!res.ok) throw new Error(`Error fetching details: ${res.status}`);
     return res.json();
 }
