@@ -12,7 +12,7 @@ export default function MovieSection({ genres }: { genres: Record<number, string
           setSearchQueryDebounced, setCurrentPage } = useMovies(genres);
 
   return (
-    <section className="content-area">
+    <section className="flex flex-col">
       <Filters
         genres={genres}
         genreFilter={genreFilter}

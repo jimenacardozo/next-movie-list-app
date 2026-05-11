@@ -2,7 +2,7 @@ import MovieCard from "./MovieCard";
 import { Movie } from '../types/movie';
 
 interface ContentGridProps {
-    movies: Movie[] | null; 
+    movies: Movie[] | null;
     genres: Record<number, string>;
     error: string | null;
 }
@@ -10,21 +10,21 @@ interface ContentGridProps {
 export default function ContentGrid({ movies, genres, error }: ContentGridProps) {
     if (error) {
         return (
-            <div className="content" id="content-grid">
-                <p className="fallback-message">{error}</p>
+            <div className="flex flex-wrap justify-center" id="content-grid">
+                <p className="text-[#7d7d7f] text-[1.2rem] text-center mt-8">{error}</p>
             </div>
         );
     };
 
     if (!movies || movies.length === 0) {
         return (
-            <div className="content" id="content-grid">
-                <p className="fallback-message">No movies found</p>
+            <div className="flex flex-wrap justify-center" id="content-grid">
+                <p className="text-[#7d7d7f] text-[1.2rem] text-center mt-8">No movies found</p>
             </div>
         );
     };
     return (
-        <div className="content" id="content-grid">
+        <div className="flex flex-wrap justify-center" id="content-grid">
             {movies.map(movie => {
                 return <MovieCard key={movie.id} movie={movie} genres={genres}></MovieCard>
             })}

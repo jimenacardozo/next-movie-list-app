@@ -10,6 +10,8 @@ interface FiltersProps {
     onSearchChange: (value: string) => void;
 }
 
+const filterSelectClass = "border border-[#232426] rounded-lg p-2 text-base bg-[#1A1B1D] text-white filter-select disabled:bg-[#545353] disabled:text-[#d8d7d7]";
+
 export default function Filters({
     genres,
     genreFilter,
@@ -21,14 +23,14 @@ export default function Filters({
 }: FiltersProps) {
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 1887 + 1 }, (_, i) => currentYear - i);
-    
+
     const isSearchActive = searchQuery.trim() !== '';
 
     return (
-        <nav className="filters-container">
+        <nav className="flex flex-col gap-4 m-4 lg:flex-row">
             <select
                 name="genre"
-                className="filter-select"
+                className={filterSelectClass}
                 value={genreFilter}
                 disabled={isSearchActive}
                 onChange={(e) => onGenreChange(e.target.value)}
@@ -41,7 +43,7 @@ export default function Filters({
 
             <select
                 name="years"
-                className="filter-select"
+                className={filterSelectClass}
                 value={yearFilter}
                 onChange={(e) => onYearChange(e.target.value)}
             >
@@ -54,7 +56,7 @@ export default function Filters({
             <input
                 type="search"
                 placeholder="Search movies..."
-                className="filter-select"
+                className={filterSelectClass}
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
             />

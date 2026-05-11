@@ -1,5 +1,4 @@
 import Hero from '../components/Hero'
-import './global.css'
 import { fetchGenres, fetchMovieDetails, fetchMovieVideos } from '../movieService'
 import { fetchTrendingMovies } from '../movieService'
 import MovieSection from '../components/MovieSection'
