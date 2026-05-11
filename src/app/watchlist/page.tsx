@@ -3,6 +3,7 @@ import { fetchMovieDetails } from '@/src/movieService'
 import { fetchGenres } from '@/src/movieService'
 import MovieCard from '@/src/components/MovieCard'
 import { Movie } from '@/src/types/movie'
+import WatchlistButtonWrapper from '@/src/components/WatchlistButtonWrapper'
 
 export default async function WatchlistPage() {
   const cookieStore = await cookies()
