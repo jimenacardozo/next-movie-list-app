@@ -5,7 +5,11 @@ export async function findWatchlistByUserId(userId: string) {
 }
 
 export async function addToWatchlist(userId: string, movieId: number) {
-  return prisma.watchlist.create({ data: { userId, movieId } })
+  return prisma.watchlist.upsert({
+    where: { userId_movieId: { userId, movieId } },
+    update: {},
+    create: { userId, movieId },
+  })
 }
 
 export async function removeFromWatchlist(userId: string, movieId: number) {

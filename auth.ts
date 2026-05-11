@@ -1,15 +1,24 @@
 import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/src/lib/prisma"
 import { validateCredentials } from "@/src/services/auth.service"
+import { authConfig } from "./auth.config"
+
+const googleClientId = process.env.AUTH_GOOGLE_ID
+const googleClientSecret = process.env.AUTH_GOOGLE_SECRET
+const googleConfigured =
+  !!googleClientId && !googleClientId.startsWith("placeholder") &&
+  !!googleClientSecret && !googleClientSecret.startsWith("placeholder")
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const GoogleProvider = googleConfigured ? require("next-auth/providers/google").default : null
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma as any),
-  session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
   providers: [
-    Google,
+    ...(GoogleProvider ? [GoogleProvider] : []),
     Credentials({
       authorize: async (credentials) => {
         const { email, password } = credentials as { email: string; password: string }
@@ -17,17 +26,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  pages: {
-    signIn: "/login",
-  },
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) token.id = user.id
-      return token
-    },
-    session({ session, token }) {
-      session.user.id = token.id as string
-      return session
-    },
-  },
 })
