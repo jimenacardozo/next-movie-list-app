@@ -13,6 +13,7 @@ export async function addToWatchlist(movieId: number) {
   if (!session?.user?.id) return
   await addMovieToWatchlist(session.user.id, movieId)
   revalidatePath(`/movie/${movieId}`)
+  revalidatePath('/watchlist')
 }
 
 export async function removeFromWatchlist(movieId: number) {
@@ -20,6 +21,7 @@ export async function removeFromWatchlist(movieId: number) {
   if (!session?.user?.id) return
   await removeMovieFromWatchlist(session.user.id, movieId)
   revalidatePath(`/movie/${movieId}`)
+  revalidatePath('/watchlist')
 }
 
 export async function getWatchlist(): Promise<number[]> {

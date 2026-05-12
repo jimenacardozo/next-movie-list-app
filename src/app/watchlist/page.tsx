@@ -1,14 +1,16 @@
-import { cookies } from 'next/headers'
-import { fetchMovieDetails } from '@/src/movieService'
-import { fetchGenres } from '@/src/movieService'
+import { redirect } from 'next/navigation'
+import { auth } from '@/auth'
+import { fetchMovieDetails, fetchGenres } from '@/src/movieService'
 import MovieCard from '@/src/components/MovieCard'
 import { Movie } from '@/src/types/movie'
-import WatchlistButtonWrapper from '@/src/components/WatchlistButtonWrapper'
+import { getWatchlistForUser } from '@/src/services/watchlist.service'
 
 export default async function WatchlistPage() {
-  const cookieStore = await cookies()
-  const raw = cookieStore.get('watchlist')?.value
-  const ids: number[] = raw ? JSON.parse(raw) : []
+  const session = await auth()
+  if (!session?.user?.id) redirect('/login')
+
+  const items = await getWatchlistForUser(session.user.id)
+  const ids = items.map((item) => item.movieId)
 
   if (ids.length === 0) {
     return (
