@@ -22,7 +22,9 @@ export const authConfig: NextAuthConfig = {
   },
   callbacks: {
     authorized({ auth, request }) {
-      return !!auth?.user || request.nextUrl.pathname.startsWith("/login")
+      const { pathname } = request.nextUrl
+      const isPublic = pathname.startsWith("/login") || pathname.startsWith("/register")
+      return !!auth?.user || isPublic
     },
     jwt({ token, user }) {
       if (user) token.id = user.id
