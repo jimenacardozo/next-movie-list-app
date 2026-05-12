@@ -1,7 +1,6 @@
 import { fetchMovieCredits, fetchMovieDetails, fetchMovieVideos, fetchTrendingMovies } from "@/src/movieService"
 import Hero from "@/src/components/Hero"
 import MovieInfo from "@/src/components/MovieInfo"
-import WatchlistButton from '@/src/components/WatchlistButton'
 import WatchlistButtonWrapper from '@/src/components/WatchlistButtonWrapper'
 import { Suspense } from "react"
 
