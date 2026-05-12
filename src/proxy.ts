@@ -1,12 +1,8 @@
 import NextAuth from "next-auth"
 import { authConfig } from "@/auth.config"
 
-const { auth } = NextAuth(authConfig)
-
-export default auth((req) => {
-  console.log("[proxy] path:", req.nextUrl.pathname, "| auth:", !!req.auth?.user)
-})
+export const { auth: proxy } = NextAuth(authConfig)
 
 export const config = {
-  matcher: ["/((?!login|api/auth|_next|favicon).*)"],
+  matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico).*)"],
 }
