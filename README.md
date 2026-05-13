@@ -24,6 +24,7 @@ Install dependencies, run the migrations and start the dev server:
 
 ```bash
 npm install
+npx prisma generate
 npx prisma migrate deploy
 npm run dev
 ```
