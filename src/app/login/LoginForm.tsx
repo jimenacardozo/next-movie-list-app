@@ -4,6 +4,7 @@ import { useState } from "react"
 import { signIn } from "next-auth/react"
 import Input from "@/src/components/Input"
 import Form from "@/src/components/Form"
+import { LoginSchema, RegisterSchema } from "@/src/lib/validations/auth"
 
 export default function LoginForm({ googleEnabled }: { googleEnabled: boolean }) {
   const [tab, setTab] = useState<"signin" | "register">("signin")
@@ -11,10 +12,15 @@ export default function LoginForm({ googleEnabled }: { googleEnabled: boolean })
 
   async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const form = new FormData(e.currentTarget)
+    const parsed = LoginSchema.safeParse(
+      Object.fromEntries(new FormData(e.currentTarget))
+    )
+    if (!parsed.success) {
+      setError("Invalid input")
+      return
+    }
     const result = await signIn("credentials", {
-      email: form.get("email") as string,
-      password: form.get("password") as string,
+      ...parsed.data,
       redirect: false,
     })
     if (result?.error) {
@@ -26,14 +32,16 @@ export default function LoginForm({ googleEnabled }: { googleEnabled: boolean })
 
   async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const form = new FormData(e.currentTarget)
+    const parsed = RegisterSchema.safeParse(
+      Object.fromEntries(new FormData(e.currentTarget))
+    )
+    if (!parsed.success) {
+      setError("Invalid input")
+      return
+    }
     const res = await fetch("/api/auth/register", {
       method: "POST",
-      body: JSON.stringify({
-        name: form.get("name"),
-        email: form.get("email"),
-        password: form.get("password"),
-      }),
+      body: JSON.stringify(parsed.data),
       headers: { "Content-Type": "application/json" },
     })
     if (!res.ok) {
@@ -42,8 +50,8 @@ export default function LoginForm({ googleEnabled }: { googleEnabled: boolean })
       return
     }
     await signIn("credentials", {
-      email: form.get("email") as string,
-      password: form.get("password") as string,
+      email: parsed.data.email,
+      password: parsed.data.password,
       redirectTo: "/",
     })
   }
