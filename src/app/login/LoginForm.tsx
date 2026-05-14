@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import { signIn } from "next-auth/react"
+import Input from "@/src/components/Input"
+import Form from "@/src/components/Form"
 
 export default function LoginForm({ googleEnabled }: { googleEnabled: boolean }) {
   const [tab, setTab] = useState<"signin" | "register">("signin")
@@ -70,22 +72,22 @@ export default function LoginForm({ googleEnabled }: { googleEnabled: boolean })
         {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
         {tab === "signin" ? (
-          <form onSubmit={handleSignIn} className="space-y-4">
-            <input name="email" type="email" placeholder="Email" required className="w-full bg-[#1c1c1f] text-white rounded-lg px-4 py-2.5 text-sm outline-none border border-white/10 focus:border-white/30" />
-            <input name="password" type="password" placeholder="Password" required className="w-full bg-[#1c1c1f] text-white rounded-lg px-4 py-2.5 text-sm outline-none border border-white/10 focus:border-white/30" />
+          <Form onSubmit={handleSignIn}>
+            <Input name="email" type="email" placeholder="Email" required />
+            <Input name="password" type="password" placeholder="Password" required />
             <button type="submit" className="w-full bg-white text-black font-medium rounded-lg py-2.5 text-sm hover:bg-white/90 transition-colors">
               Sign in
             </button>
-          </form>
+          </Form>
         ) : (
-          <form onSubmit={handleRegister} className="space-y-4">
-            <input name="name" type="text" placeholder="Name" required className="w-full bg-[#1c1c1f] text-white rounded-lg px-4 py-2.5 text-sm outline-none border border-white/10 focus:border-white/30" />
-            <input name="email" type="email" placeholder="Email" required className="w-full bg-[#1c1c1f] text-white rounded-lg px-4 py-2.5 text-sm outline-none border border-white/10 focus:border-white/30" />
-            <input name="password" type="password" placeholder="Password" required className="w-full bg-[#1c1c1f] text-white rounded-lg px-4 py-2.5 text-sm outline-none border border-white/10 focus:border-white/30" />
+          <Form onSubmit={handleRegister}>
+            <Input name="name" type="text" placeholder="Name" required />
+            <Input name="email" type="email" placeholder="Email" required />
+            <Input name="password" type="password" placeholder="Password" required />
             <button type="submit" className="w-full bg-white text-black font-medium rounded-lg py-2.5 text-sm hover:bg-white/90 transition-colors">
               Register
             </button>
-          </form>
+          </Form>
         )}
 
         {googleEnabled && (
