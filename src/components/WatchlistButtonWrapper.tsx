@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { auth } from '@/auth'
-import { getWatchlistForUser } from '@/src/services/watchlist.service'
+import { isInWatchlist } from '@/src/services/watchlist.service'
 import WatchlistButton from './WatchlistButton'
 
 export default async function WatchlistButtonWrapper({
@@ -22,13 +22,12 @@ export default async function WatchlistButtonWrapper({
     )
   }
 
-  const items = await getWatchlistForUser(session.user.id)
-  const isInWatchlist = items.some((item) => item.movieId === movieId)
+  const inWatchlist = await isInWatchlist(session.user.id, movieId)
 
   return (
     <WatchlistButton
       movieId={movieId}
-      isInWatchlist={isInWatchlist}
+      isInWatchlist={inWatchlist}
     />
   )
 }

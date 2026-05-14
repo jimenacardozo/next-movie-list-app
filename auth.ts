@@ -16,7 +16,7 @@ const GoogleProvider = googleConfigured ? Google : null
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
-  adapter: PrismaAdapter(prisma as any),
+  adapter: PrismaAdapter(prisma),
   providers: [
     ...(GoogleProvider ? [GoogleProvider] : []),
     Credentials({
