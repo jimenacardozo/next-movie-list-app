@@ -2,12 +2,10 @@
 
 import { useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
 
 export default function LoginForm({ googleEnabled }: { googleEnabled: boolean }) {
   const [tab, setTab] = useState<"signin" | "register">("signin")
   const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
 
   async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
