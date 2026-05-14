@@ -46,7 +46,14 @@ export default async function MovieDetailsPage({ params }: { params: Promise<{ i
     <>
       <Hero movie={movie} details={details} genreList={movie.genres} />
       <div className="max-w-5xl mx-auto px-6 pt-6">
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <div
+              aria-hidden="true"
+              className="h-9.5 w-40 rounded-full border border-[#232426] bg-[#1A1B1D] animate-pulse"
+            />
+          }
+        >
           <WatchlistButtonWrapper movieId={Number(id)} />
         </Suspense>
       </div>

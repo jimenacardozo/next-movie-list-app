@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import Google from "next-auth/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/src/lib/prisma"
 import { validateCredentials } from "@/src/services/auth.service"
@@ -11,8 +12,7 @@ const googleConfigured =
   !!googleClientId && !googleClientId.startsWith("placeholder") &&
   !!googleClientSecret && !googleClientSecret.startsWith("placeholder")
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const GoogleProvider = googleConfigured ? require("next-auth/providers/google").default : null
+const GoogleProvider = googleConfigured ? Google : null
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
